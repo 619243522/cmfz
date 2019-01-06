@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.AlbumMapper">
+    <resultMap id="r1" type="com.baizhi.entity.Album">
+        <id column="aid" property="id"></id>
+        <result column="atitle" property="title"></result>
+        <result column="acount" property="count"></result>
+        <result column="acover_img" property="coverImg"></result>
+        <result column="ascore" property="score"></result>
+        <result column="aauthor" property="author"></result>
+        <result column="abroadcast" property="broadcast"></result>
+        <result column="abrief" property="brief"></result>
+        <result column="apub_date" property="pubDate"></result>
+        <collection property="children" ofType="com.baizhi.entity.Chapter">
+            <id column="cid" property="id"></id>
+            <result column="ctitle" property="title"></result>
+            <result column="csize" property="size"></result>
+            <result column="cduration" property="duration"></result>
+            <result column="curl" property="url"></result>
+            <result column="cupload_date" property="uploadDate"></result>
+        </collection>
+    </resultMap>
+    <select id="queryAll" resultMap="r1">
+        select a.id          aid,
+               a.title       atitle,
+               a.count       acount,
+               a.cover_img   acover_img,
+               a.score       ascore,
+               a.author      aauthor,
+               a.broadcast   abroadcast,
+               a.brief       abrief,
+               a.pub_date    apub_date,
+               c.id          cid,
+               c.title       ctitle,
+               c.size        csize,
+               c.duration    cduration,
+               c.url         curl,
+               c.upload_date cupload_date
+        from (select aa.*
+              from album aa
+                   limit
+                   ${(curPage-1)*pageSize},
+                   ${pageSize}) a
+                 left join chapter c on a.id = c.album_id
+
+    </select>
+    <select id="queryAllAlbum" resultMap="r1">
+        select a.id          aid,
+               a.title       atitle,
+               a.count       acount,
+               a.cover_img   acover_img,
+               a.score       ascore,
+               a.author      aauthor,
+               a.broadcast   abroadcast,
+               a.brief       abrief,
+               a.pub_date    apub_date,
+               c.id          cid,
+               c.title       ctitle,
+               c.size        csize,
+               c.duration    cduration,
+               c.url         curl,
+               c.upload_date cupload_date
+        from album a
+                 left join chapter c on a.id = c.album_id
+
+    </select>
+</mapper>
